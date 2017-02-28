@@ -33,5 +33,5 @@ public abstract class AbstractItem {
 		return item.clone();
 	}
 	
-	protected abstract void clickItem(AbstractInventory inventory, Player player);
+	protected abstract void clickItem(InventoryManager inventoryManager, AbstractInventory inventory, Player player);
 }

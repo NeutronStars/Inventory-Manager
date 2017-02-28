@@ -35,7 +35,7 @@ public abstract class AbstractInventory{
 	
 	public final void setItem(int slot, ItemStack item){
 		setItem(slot, new AbstractItem(item) {
-			public void clickItem(AbstractInventory inventory, Player player) {}
+			public void clickItem(InventoryManager inventoryManager, AbstractInventory inventory, Player player) {}
 		});
 	}
 	
@@ -53,7 +53,7 @@ public abstract class AbstractInventory{
 		return getInventory().getTitle();
 	}
 	
-	protected final void clickItem(Player player, int slot){
-		if(items.containsKey(slot)) items.get(slot).clickItem(this, player);
+	protected final void clickItem(InventoryManager inventoryManager, Player player, int slot){
+		if(items.containsKey(slot)) items.get(slot).clickItem(inventoryManager, this, player);
 	}
 }

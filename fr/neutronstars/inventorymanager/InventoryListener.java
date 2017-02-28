@@ -40,7 +40,7 @@ final class InventoryListener implements Listener{
 		if(ice.getInventory() == null || ice.getCurrentItem() == null) return;
 		inventoryManger.getInventories().forEach(i->{
 			if(ice.getInventory().getTitle().equalsIgnoreCase(i.getTitle())){
-				i.clickItem((Player)ice.getWhoClicked(), ice.getSlot());
+				i.clickItem(inventoryManger, (Player)ice.getWhoClicked(), ice.getSlot());
 				ice.setCancelled(true);
 			}
 		});
