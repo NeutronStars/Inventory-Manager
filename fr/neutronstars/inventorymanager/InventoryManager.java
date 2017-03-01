@@ -23,6 +23,8 @@ public final class InventoryManager {
 	private final Map<String, AbstractInventory> inventories = Maps.newHashMap();
 	private final InteractItem[] interactItems = new InteractItem[9];
 	
+	protected boolean cancelPlayerDrop, cancelPlayerPickup;
+	
 	public InventoryManager(Plugin plugin){
 		Bukkit.getPluginManager().registerEvents(new InventoryListener(this), plugin);
 	}
@@ -96,6 +98,22 @@ public final class InventoryManager {
 	public final void setItemHotbar(int slot, Material material, int count, int data, String name, List<String> lores, boolean glowing, String title, Action...actions){
 		if(slot < 0 || slot > 8) return;
 		interactItems[slot] = new InteractItem(slot, material, count, data, name, lores, glowing, title, actions);
+	}
+	
+	/**
+	 * Annule l'event pour jetter un item.
+	 * @param cancelled
+	 */
+	public final void setCancelledPlayerDrop(boolean cancelled){
+		cancelPlayerDrop = cancelled;
+	}
+	
+	/**
+	 * Annule l'event pour recuperer un item.
+	 * @param cancelled
+	 */
+	public final void setCancelledPlayerPickup(boolean cancelled){
+		cancelPlayerPickup = cancelled;
 	}
 	
 	/**

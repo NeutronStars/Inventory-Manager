@@ -2,11 +2,13 @@ package fr.neutronstars.inventorymanager;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 /**
  * @author NeutronStars
@@ -14,38 +16,43 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 final class InventoryListener implements Listener{
 
-	private final InventoryManager inventoryManger;
+	private final InventoryManager inventoryManager;
 	
-	protected InventoryListener(InventoryManager inventoryManger){
-		this.inventoryManger = inventoryManger;
+	protected InventoryListener(InventoryManager inventoryManager){
+		this.inventoryManager = inventoryManager;
 	}
 	
-	@EventHandler
+	@EventHandler(priority=EventPriority.HIGHEST)
 	private void playerJoin(PlayerJoinEvent pje){
-		inventoryManger.setPlayerHotbar(pje.getPlayer());
+		inventoryManager.setPlayerHotbar(pje.getPlayer());
 	}
 	
-	@EventHandler
+	@EventHandler(priority=EventPriority.HIGHEST)
 	private void playerInteract(PlayerInteractEvent pie){
-		InteractItem ii = inventoryManger.getItemHotbar(pie.getPlayer().getInventory().getHeldItemSlot());
+		InteractItem ii = inventoryManager.getItemHotbar(pie.getPlayer().getInventory().getHeldItemSlot());
 		if(ii == null || !ii.getActions().contains(pie.getAction())) return;
-		inventoryManger.openInventory(pie.getPlayer(), ii.getInventoryKey());
+		inventoryManager.openInventory(pie.getPlayer(), ii.getInventoryKey());
 		pie.setCancelled(true);
 	}
 	
-	@EventHandler
+	@EventHandler(priority=EventPriority.HIGHEST)
 	private void clickItem(InventoryClickEvent ice){
 		if(ice.getInventory() == null || ice.getCurrentItem() == null) return;
-		inventoryManger.getInventories().forEach(i->{
+		inventoryManager.getInventories().forEach(i->{
 			if(ice.getInventory().getTitle().equalsIgnoreCase(i.getTitle())){
-				i.clickItem(inventoryManger, (Player)ice.getWhoClicked(), ice.getSlot());
+				i.clickItem(inventoryManager, (Player)ice.getWhoClicked(), ice.getSlot());
 				ice.setCancelled(true);
 			}
 		});
 	}
 	
-	@EventHandler
+	@EventHandler(priority=EventPriority.HIGHEST)
 	private void dropItem(PlayerDropItemEvent pdie){
-		pdie.setCancelled(true);
+		pdie.setCancelled(inventoryManager.cancelPlayerDrop);
+	}
+	
+	@EventHandler(priority=EventPriority.HIGHEST)
+	private void pickupItem(PlayerPickupItemEvent ppie){
+		ppie.setCancelled(inventoryManager.cancelPlayerPickup);
 	}
 }
