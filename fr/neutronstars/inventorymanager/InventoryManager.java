@@ -118,4 +118,15 @@ public final class InventoryManager {
 			player.getInventory().setItem(ii.getSlot(), ii.getItem());
 		}
 	}
+	
+	/**
+	 * Ouverture d'un inventaire au Joueur.
+	 * @param player
+	 * @param title
+	 */
+	public final void openInventory(Player player, String title){
+		AbstractInventory ai = getInventory(title);
+		if(ai == null) return;
+		player.openInventory(ai.getInventory());
+	}
 }

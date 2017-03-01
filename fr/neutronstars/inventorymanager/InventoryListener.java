@@ -29,9 +29,7 @@ final class InventoryListener implements Listener{
 	private void playerInteract(PlayerInteractEvent pie){
 		InteractItem ii = inventoryManger.getItemHotbar(pie.getPlayer().getInventory().getHeldItemSlot());
 		if(ii == null || !ii.getActions().contains(pie.getAction())) return;
-		AbstractInventory ai = inventoryManger.getInventory(ii.getInventoryKey());
-		if(ai == null) return;
-		pie.getPlayer().openInventory(ai.getInventory());
+		inventoryManger.openInventory(pie.getPlayer(), ii.getInventoryKey());
 		pie.setCancelled(true);
 	}
 	
