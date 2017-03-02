@@ -35,6 +35,7 @@ public final class InventoryManager {
 	 * @return inventaire ou null.
 	 */
 	public final AbstractInventory getInventory(String title){
+		assert title != null : "Le titre ne peut pas etre null";
 		return inventories.containsKey(title) ? inventories.get(title) : null;
 	}
 	
@@ -97,7 +98,8 @@ public final class InventoryManager {
 	 */
 	public final void setItemHotbar(int slot, Material material, int count, int data, String name, List<String> lores, boolean glowing, String title, Action...actions){
 		if(slot < 0 || slot > 8) return;
-		interactItems[slot] = new InteractItem(slot, material, count, data, name, lores, glowing, title, actions);
+		assert material != null : "Le material ne peut pas etre null";
+		interactItems[slot] = new InteractItem(slot, material, count, data, name, lores, glowing, title != null ? title : "", actions);
 	}
 	
 	/**
@@ -131,10 +133,8 @@ public final class InventoryManager {
 	 */
 	public final void setPlayerHotbar(Player player){
 		player.getInventory().clear();
-		for(InteractItem ii : interactItems){
-			if(ii == null) continue;
-			player.getInventory().setItem(ii.getSlot(), ii.getItem());
-		}
+		for(InteractItem ii : interactItems) 
+			if(ii != null) player.getInventory().setItem(ii.getSlot(), ii.getItem());
 	}
 	
 	/**
@@ -144,7 +144,7 @@ public final class InventoryManager {
 	 */
 	public final void openInventory(Player player, String title){
 		AbstractInventory ai = getInventory(title);
-		if(ai == null) return;
+		assert ai != null : "L'inventaire "+title+" n'a pas été trouvé";
 		player.openInventory(ai.getInventory());
 	}
 }
