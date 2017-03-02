@@ -38,12 +38,13 @@ final class InventoryListener implements Listener{
 	@EventHandler(priority=EventPriority.HIGHEST)
 	private void clickItem(InventoryClickEvent ice){
 		if(ice.getInventory() == null || ice.getCurrentItem() == null) return;
-		inventoryManager.getInventories().forEach(i->{
-			if(ice.getInventory().getTitle().equalsIgnoreCase(i.getTitle())){
-				i.clickItem(inventoryManager, (Player)ice.getWhoClicked(), ice.getSlot());
-				ice.setCancelled(true);
-			}
-		});
+		for(AbstractInventory ai : inventoryManager.getInventories()){
+			if(ice.getInventory().getTitle().equalsIgnoreCase(ai.getTitle())){
+				ai.clickItem(inventoryManager, (Player)ice.getWhoClicked(), ice.getSlot());
+				ice.setCancelled(ai.isCancelled());
+				return;
+			}			
+		}
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
