@@ -35,8 +35,7 @@ public final class InventoryManager {
 	 * @return inventaire ou null.
 	 */
 	public final AbstractInventory getInventory(String title){
-		assert title != null : "Le titre ne peut pas etre null";
-		return inventories.containsKey(title) ? inventories.get(title) : null;
+		return title != null && inventories.containsKey(title) ? inventories.get(title) : null;
 	}
 	
 	/**
@@ -98,7 +97,7 @@ public final class InventoryManager {
 	 */
 	public final void setItemHotbar(int slot, Material material, int count, int data, String name, List<String> lores, boolean glowing, String title, Action...actions){
 		if(slot < 0 || slot > 8) return;
-		assert material != null : "Le material ne peut pas etre null";
+		if(material == null) material = Material.AIR;
 		interactItems[slot] = new InteractItem(slot, material, count, data, name, lores, glowing, title != null ? title : "", actions);
 	}
 	
@@ -144,7 +143,7 @@ public final class InventoryManager {
 	 */
 	public final void openInventory(Player player, String title){
 		AbstractInventory ai = getInventory(title);
-		assert ai != null : "L'inventaire "+title+" n'a pas été trouvé";
-		player.openInventory(ai.getInventory());
+		if(ai != null) player.openInventory(ai.getInventory());
+		else System.out.println("L'inventaire "+title+" n'a pas etre ouvert au joueur "+player.getName());
 	}
 }
