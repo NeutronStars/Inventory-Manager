@@ -1,7 +1,7 @@
 # Inventory-Manager
 
 Créer par   : NeutronStars
-Email       : pro@neutronstars.fr
+\nEmail       : pro@neutronstars.fr
 
 Description : Permet une plus simple gestion des inventaires sur minecraft.
 
