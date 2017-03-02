@@ -19,12 +19,23 @@ public abstract class AbstractInventory{
 	private final Inventory inventory;
 	private final Map<Integer, AbstractItem> items = Maps.newHashMap();
 	
+	private boolean cancelled = true;
+	
 	public AbstractInventory(int size, String title){
 		inventory = Bukkit.createInventory(null, size, title);
 	}
 	
+	public AbstractInventory(int size, String title, boolean cancelled){
+		inventory = Bukkit.createInventory(null, size, title);
+		setCancelled(cancelled);
+	}
+	
 	public final Inventory getInventory() {
 		return cloneInventory();
+	}
+	
+	public boolean isCancelled() {
+		return cancelled;
 	}
 	
 	private final Inventory cloneInventory(){
@@ -42,6 +53,10 @@ public abstract class AbstractInventory{
 	public final void setItem(int slot, AbstractItem item){
 		inventory.setItem(slot, item.getItem());
 		items.put(slot, item);
+	}
+	
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 	
 	public final void removeItem(int slot){
