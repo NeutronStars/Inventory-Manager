@@ -23,7 +23,7 @@ public final class InventoryManager {
 	private final Map<String, AbstractInventory> inventories = Maps.newHashMap();
 	private final InteractItem[] interactItems = new InteractItem[9];
 	
-	protected boolean cancelPlayerDrop, cancelPlayerPickup;
+	protected boolean cancelPlayerDrop, cancelPlayerPickup, enableHotbar;
 	
 	public InventoryManager(Plugin plugin){
 		Bukkit.getPluginManager().registerEvents(new InventoryListener(this), plugin);
@@ -81,6 +81,14 @@ public final class InventoryManager {
 	public final void unregisterInventories(String... titles){
 		for(String title : titles)
 			if(inventories.containsKey(title)) inventories.remove(titles);
+	}
+	
+	/**
+	 * Active/Desactive la hotbar custom.
+	 * @param enable
+	 */
+	public void enableHotbar(boolean enable){
+		this.enableHotbar = enable;
 	}
 	
 	/**

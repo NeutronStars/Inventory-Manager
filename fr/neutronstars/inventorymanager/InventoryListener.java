@@ -24,7 +24,7 @@ final class InventoryListener implements Listener{
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
 	private void playerJoin(PlayerJoinEvent pje){
-		inventoryManager.setPlayerHotbar(pje.getPlayer());
+		if(inventoryManager.enableHotbar) inventoryManager.setPlayerHotbar(pje.getPlayer());
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
