@@ -35,7 +35,7 @@ public final class InventoryManager {
 	 * @return inventaire ou null.
 	 */
 	public final AbstractInventory getInventory(String title){
-		return title != null && inventories.containsKey(title) ? inventories.get(title) : null;
+		return inventories.get(title);
 	}
 	
 	/**
@@ -103,10 +103,10 @@ public final class InventoryManager {
 	 * @param title
 	 * @param actions
 	 */
-	public final void setItemHotbar(int slot, Material material, int count, int data, String name, List<String> lores, boolean glowing, String title, Action...actions){
+	public final void setItemHotbar(int slot, Material material, int count, int data, String name, List<String> lores, boolean glowing, String title, boolean log, Action...actions){
 		if(slot < 0 || slot > 8) return;
 		if(material == null) material = Material.AIR;
-		interactItems[slot] = new InteractItem(slot, material, count, data, name, lores, glowing, title != null ? title : "", actions);
+		interactItems[slot] = new InteractItem(slot, material, count, data, name, lores, glowing, title != null ? title : "", log, actions);
 	}
 	
 	/**
@@ -149,9 +149,9 @@ public final class InventoryManager {
 	 * @param player
 	 * @param title
 	 */
-	public final void openInventory(Player player, String title){
+	public final void openInventory(Player player, String title, boolean log){
 		AbstractInventory ai = getInventory(title);
 		if(ai != null) player.openInventory(ai.getInventory());
-		else System.out.println("L'inventaire "+title+" n'a pas etre ouvert au joueur "+player.getName());
+		else if(log) System.out.println("L'inventaire "+title+" n'a pas pu etre ouvert au joueur "+player.getName());
 	}
 }

@@ -23,8 +23,9 @@ final class InteractItem{
 	private final List<Action> actions = Lists.newArrayList();
 	private final ItemStack item;
 	private final String inventoryKey;
+	private final boolean log;
 	
-	protected InteractItem(int slot, Material material, int count, int data, String name, List<String> lores, boolean glowing, String title, Action...actions){
+	protected InteractItem(int slot, Material material, int count, int data, String name, List<String> lores, boolean glowing, String title, boolean log, Action...actions){
 		this.slot = slot;
 		item = new ItemStack(material, count, (byte)data);
 		ItemMeta im = item.getItemMeta();
@@ -36,6 +37,7 @@ final class InteractItem{
 		}
 		item.setItemMeta(im);
 		inventoryKey = title;
+		this.log = log;
 		for(Action action : actions) this.actions.add(action);
 	}
 	
@@ -53,5 +55,9 @@ final class InteractItem{
 	
 	protected final String getInventoryKey() {
 		return inventoryKey;
+	}
+	
+	public boolean isLog() {
+		return log;
 	}
 }

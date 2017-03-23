@@ -31,20 +31,17 @@ final class InventoryListener implements Listener{
 	private void playerInteract(PlayerInteractEvent pie){
 		InteractItem ii = inventoryManager.getItemHotbar(pie.getPlayer().getInventory().getHeldItemSlot());
 		if(ii == null || !ii.getActions().contains(pie.getAction())) return;
-		inventoryManager.openInventory(pie.getPlayer(), ii.getInventoryKey());
+		inventoryManager.openInventory(pie.getPlayer(), ii.getInventoryKey(), ii.isLog());
 		pie.setCancelled(true);
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
 	private void clickItem(InventoryClickEvent ice){
-		if(ice.getInventory() == null || ice.getCurrentItem() == null) return;
-		for(AbstractInventory ai : inventoryManager.getInventories()){
-			if(ice.getInventory().getTitle().equalsIgnoreCase(ai.getTitle())){
-				ai.clickItem(inventoryManager, (Player)ice.getWhoClicked(), ice.getSlot());
-				ice.setCancelled(ai.isCancelled());
-				return;
-			}			
-		}
+		if(ice.getClickedInventory() == null) return;
+		AbstractInventory ai = inventoryManager.getInventory(ice.getClickedInventory().getTitle());
+		if(ai == null) return;
+		ai.clickItem(inventoryManager, (Player)ice.getWhoClicked(), ice.getSlot());
+		ice.setCancelled(ai.isCancelled());
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
